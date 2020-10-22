@@ -33,7 +33,7 @@ def getdate(page, baseurl,path):
         position = soup.find_all('a', class_="reco-job-title")
         company = soup.find_all('div', class_="reco-job-com")
         location = soup.find_all('span', class_="nk-txt-ellipsis js-nc-title-tips job-address")
-        salary                  = soup.find_all('div', class_="reco-job-info")
+        salary                  = re.findall(re.compile(r'<span><span class="ico-nb">¥</span>(.*?)</span>'), str(soup))
         release_time = soup.find_all('span', string=re.compile('前'))
         processing_rate = soup.find_all('span', class_="intern_center js-nc-title-tips")
         for j in range(0, len(position)):
@@ -46,7 +46,7 @@ def getdate(page, baseurl,path):
             data_location_list.append(location[j].text)
 
         for j in range(0, len(salary)):
-            data_salary_list.append(salary[j].div.contents[3].contents[0].next_sibling)
+            data_salary_list.append(salary[j])
 
         for j in range(0, len(release_time)):
             data_release_time_list.append(release_time[j].string)
@@ -92,8 +92,11 @@ if __name__=="__main__":
     path = r"D:\pythonProject2\spider\niukewang.xls"
     url = "https://www.nowcoder.com/intern/center?recruitType=1&page="
     page = input("你想看前几页?")
+    page = int(page)+1
     getdate(page, url, path)
     print('爬完了！！')
+
+
     </pre>
 </body>
 </html>
